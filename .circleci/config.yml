@@ -1,0 +1,26 @@
+version: 2
+jobs:
+  build:
+    # Add image here 
+    docker:
+      - image: circleci/node:latest-browsers
+    steps:
+    - checkout
+    - restore_cache:
+        keys:
+        - v1-npm-deps-{{ checksum "package.json" }}
+        - v1-npm-deps
+    - run:
+        # Add commands here
+        - npm install
+        - npm start
+        - npm test
+    - save_cache:
+        key: v1-npm-deps-{{ checksum "package.json" }}
+        paths:
+        - node_modules
+workflows:
+  version: 2
+  workflow:
+    jobs:
+    - build
